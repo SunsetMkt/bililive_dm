@@ -75,9 +75,26 @@ namespace Bililive_dm
         public MainOverlay Overlay;
         private bool _isOpm = true;
         private Task _bopenHeartBeatTask = null;
+
+        [DllImport("ntdll.dll", EntryPoint = "wine_get_version", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr wine_get_version();
         public MainWindow()
         {
             InitializeComponent();
+            try
+            {
+               
+                IntPtr ptr = wine_get_version();
+                if ( ptr != IntPtr.Zero){
+                    System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
             switch (CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName)
             {
                 case "ja":
